@@ -1,6 +1,8 @@
 package kg.attractor.movie_review_21.errors;
 
-public class CanNotFindMovieException extends RuntimeException {
+import java.util.NoSuchElementException;
+
+public class CanNotFindMovieException extends NoSuchElementException {
     public CanNotFindMovieException() {
     }
 

@@ -5,10 +5,12 @@ import kg.attractor.movie_review_21.dto.UserDto;
 import kg.attractor.movie_review_21.model.User;
 import kg.attractor.movie_review_21.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -48,5 +50,10 @@ public class UserServiceImpl implements UserService {
                 .name(user.getUsername())
                 .password(user.getPassword())
                 .build();
+    }
+
+    @Override
+    public void createUser(UserDto userDto) {
+        log.info(userDto.toString());
     }
 }

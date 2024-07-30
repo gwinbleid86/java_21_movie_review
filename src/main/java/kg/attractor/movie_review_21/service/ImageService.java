@@ -1,5 +1,6 @@
 package kg.attractor.movie_review_21.service;
 
+import kg.attractor.movie_review_21.dto.ImageRequestDto;
 import lombok.SneakyThrows;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -12,17 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
 public interface ImageService {
-    Path PATH = Path.of("data/images");
     String UPLOAD_DIR = "data/images/";
 
-    String upload(MultipartFile file);
-    ResponseEntity<?> download(String name);
+    void upload(ImageRequestDto request);
+
+    ResponseEntity<?> download(Long id);
 
     @SneakyThrows
     static String uploadImage(MultipartFile file) {

@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006
+      author: Aleksei
+      changes:
+        - createTable:
+            tableName: images
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: filename
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: movie_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_movie_id_image
+                    references: movie(id)
