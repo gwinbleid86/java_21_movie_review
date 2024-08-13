@@ -1,57 +1,44 @@
 package kg.attractor.movie_review_21.dao;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import kg.attractor.movie_review_21.model.Movie;
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class MovieDao {
-    private static final Path PATH = Path.of("data/files/movies.json");
+    private final JdbcTemplate jdbcTemplate;
 
-
-    @Getter
-    private List<Movie> movies = new ArrayList<>();
-
-    public MovieDao() {
-        readFile();
+    public List<Movie> getMovies() {
+        String sql = "select * from movie";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Movie.class));
     }
 
-    private void readFile() {
-        try {
-            String json = Files.readString(PATH);
-            Map<String, List<Movie>> list = new Gson()
-                    .fromJson(
-                            json,
-                            new TypeToken<Map<String, List<Movie>>>() {
-                            }.getType()
-                    );
-            movies.addAll(list.get("movies"));
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
-
-    private void writeFile(Map<String, List<Movie>> moviesMap) {
-        String json = new Gson().toJson(moviesMap);
-        try {
-            Files.write(PATH, json.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
+    public List<Movie> getMovies(Integer limit, Integer offset) {
+        String sql = """
+                select * from movie
+                limit ?
+                offset ?;
+                """;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Movie.class), limit, offset);
     }
 
     public void addMovie(Movie movie) {
-        movies.add(movie);
-        writeFile(Map.of("movies", movies));
+
+    }
+
+    public Optional<Movie> findById(long id) {
+        String sql = "select * from movie where id = ?";
+        return Optional.ofNullable(
+                DataAccessUtils.singleResult(
+                        jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Movie.class), id)
+                )
+        );
     }
 }

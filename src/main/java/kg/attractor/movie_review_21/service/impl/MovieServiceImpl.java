@@ -3,8 +3,6 @@ package kg.attractor.movie_review_21.service.impl;
 import kg.attractor.movie_review_21.dao.MovieDao;
 import kg.attractor.movie_review_21.dto.MovieDto;
 import kg.attractor.movie_review_21.errors.CanNotFindMovieException;
-import kg.attractor.movie_review_21.model.Cast;
-import kg.attractor.movie_review_21.model.Director;
 import kg.attractor.movie_review_21.model.Movie;
 import kg.attractor.movie_review_21.service.CastService;
 import kg.attractor.movie_review_21.service.DirectorService;
@@ -25,39 +23,37 @@ public class MovieServiceImpl implements MovieService {
     private final SwaggerUiOAuthProperties swaggerUiOAuthProperties;
 
     @Override
-    public List<MovieDto> getMovies() {
-        return movieDao.getMovies().stream()
+    public List<MovieDto> getMovies(Integer page, Integer size) {
+        return movieDao.getMovies(size, size * page).stream()
                 .map(this::convertToDto)
                 .toList();
     }
 
     @Override
-    public MovieDto getMovie(int id) throws RuntimeException {
-        Movie movie = movieDao.getMovies().stream()
-                .filter(e -> e.getId() == id)
-                .findFirst()
+    public MovieDto getMovie(long id) throws RuntimeException {
+        Movie movie = movieDao.findById(id)
                 .orElseThrow(() -> new CanNotFindMovieException("Can not find Movie with ID: " + id));
         return convertToDto(movie);
     }
 
     @Override
     public void create(MovieDto movieDto) {
-        var casts = movieDto.getCast().stream()
-                .map(e -> Cast.builder()
-                        .fullName(e.getFullName())
-                        .role(e.getRole())
-                        .build())
-                .toList();
-        movieDao.addMovie(Movie.builder()
-                .id(movieDto.getId())
-                .name(movieDto.getName())
-                .year(movieDto.getYear())
-                .description(movieDto.getDescription())
-                .director(Director.builder()
-                        .fullName(movieDto.getDirector().getFullName())
-                        .build())
-                .cast(casts)
-                .build());
+//        var casts = movieDto.getCast().stream()
+//                .map(e -> Cast.builder()
+//                        .fullName(e.getFullName())
+//                        .role(e.getRole())
+//                        .build())
+//                .toList();
+//        movieDao.addMovie(Movie.builder()
+//                .id(movieDto.getId())
+//                .name(movieDto.getName())
+//                .year(movieDto.getYear())
+//                .description(movieDto.getDescription())
+//                .director(Director.builder()
+//                        .fullName(movieDto.getDirector().getFullName())
+//                        .build())
+//                .cast(casts)
+//                .build());
     }
 
     private MovieDto convertToDto(Movie movie) {
@@ -66,8 +62,8 @@ public class MovieServiceImpl implements MovieService {
                 .name(movie.getName())
                 .year(movie.getYear())
                 .description(movie.getDescription())
-                .director(directorService.convertToDto(movie.getDirector()))
-                .cast(castService.convertToDto(movie.getCast()))
+                .director(directorService.convertToDto(movie.getDirectorId()))
+                .cast(castService.convertToDto(movie.getId()))
                 .build();
     }
 

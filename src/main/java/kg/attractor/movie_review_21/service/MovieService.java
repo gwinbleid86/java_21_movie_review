@@ -5,9 +5,9 @@ import kg.attractor.movie_review_21.dto.MovieDto;
 import java.util.List;
 
 public interface MovieService {
-    List<MovieDto> getMovies();
+    List<MovieDto> getMovies(Integer page, Integer size);
 
-    MovieDto getMovie(int id) throws RuntimeException;
+    MovieDto getMovie(long id) throws RuntimeException;
 
     void create(MovieDto movieDto);
 }

@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009
+      author: Aleksei
+      changes:
+        - insert:
+            tableName: authorities
+            columns:
+              - column:
+                  name: authority
+                  value: 'ADMIN'
+        - insert:
+            tableName: authorities
+            columns:
+              - column:
+                  name: authority
+                  value: 'GUEST'
+        - insert:
+            tableName: authorities
+            columns:
+              - column:
+                  name: authority
+                  value: 'AUTHORIZED_USER'
+        - insert:
+            tableName: usr
+            columns:
+              - column:
+                  name: email
+                  value: 'qwe@qwe.qwe'
+              - column:
+                  name: username
+                  value: qwe
+              - column:
+                  name: password
+                  value: '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2'
+              - column:
+                  name: enabled
+                  value: true
+              - column:
+                  name: authority_id
+                  value: 1
+        - insert:
+            tableName: usr
+            columns:
+              - column:
+                  name: email
+                  value: 'ewq@ewq.com'
+              - column:
+                  name: username
+                  value: 'ewq'
+              - column:
+                  name: password
+                  value: '$2a$12$WB2YUbFcCN0tm44SBcKUjua9yiFBsfB3vW02IjuwzY7HGtlQIKzy2'
+              - column:
+                  name: enabled
+                  value: true
+              - column:
+                  name: authority_id
+                  value: 2

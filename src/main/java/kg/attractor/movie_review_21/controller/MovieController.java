@@ -24,8 +24,11 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<List<MovieDto>> getMovies() {
-        return new ResponseEntity<>(movieService.getMovies(), HttpStatus.OK);
+    public ResponseEntity<List<MovieDto>> getMovies(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size
+    ) {
+        return new ResponseEntity<>(movieService.getMovies(page, size), HttpStatus.OK);
     }
 
     @GetMapping("search")

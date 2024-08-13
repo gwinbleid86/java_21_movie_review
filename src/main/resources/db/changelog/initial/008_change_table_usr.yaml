@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008
+      author: Aleksei
+      changes:
+        - addColumn:
+            tableName: usr
+            columns:
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authority_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_authority_usr_id
+                    references: authorities(id)

@@ -16,6 +16,6 @@ public class Movie {
     private String name;
     private Integer year;
     private String description;
-    private Director director;
-    private List<Cast> cast;
+    private Long directorId;
+    private List<Long> cast;
 }
