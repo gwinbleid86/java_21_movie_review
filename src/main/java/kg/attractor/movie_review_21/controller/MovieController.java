@@ -1,57 +1,38 @@
 package kg.attractor.movie_review_21.controller;
 
-import kg.attractor.movie_review_21.dto.MovieDto;
-import kg.attractor.movie_review_21.errors.CanNotFindMovieException;
+import kg.attractor.movie_review_21.dto.MovieRequest;
+import kg.attractor.movie_review_21.service.CastService;
+import kg.attractor.movie_review_21.service.DirectorService;
 import kg.attractor.movie_review_21.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("movies")
+@Controller
 @RequiredArgsConstructor
 public class MovieController {
-
     private final MovieService movieService;
+    private final DirectorService directorService;
+    private final CastService castService;
 
     @GetMapping
-    public ResponseEntity<List<MovieDto>> getMovies(
-            @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "size") Integer size
-    ) {
-        return new ResponseEntity<>(movieService.getMovies(page, size), HttpStatus.OK);
+    public String getMovies(Model model) {
+        model.addAttribute("movies", movieService.getMovies());
+        return "movies/index";
     }
 
-    @GetMapping("search")
-    public ResponseEntity<?> searchMovie(@RequestParam(name = "id", required = false) Integer id) {
-        try {
-            return new ResponseEntity<>(movieService.getMovie(id), HttpStatus.OK);
-        } catch (CanNotFindMovieException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    @GetMapping("create")
+    public String createMovie(Model model) {
+        model.addAttribute("directors", directorService.getList());
+        model.addAttribute("casts", castService.getList());
+        return "movies/create";
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<?> getMovie(@PathVariable Integer id) {
-        try {
-            return new ResponseEntity<>(movieService.getMovie(id), HttpStatus.OK);
-        } catch (CanNotFindMovieException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @PostMapping
-    public HttpStatus createMovie(@RequestBody MovieDto movieDto) {
-        movieService.create(movieDto);
-        return HttpStatus.CREATED;
+    @PostMapping("create")
+    public String createMovie(MovieRequest movie) {
+        movieService.create(movie);
+        return "redirect:/";
     }
 }

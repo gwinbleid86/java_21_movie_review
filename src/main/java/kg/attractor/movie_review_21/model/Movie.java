@@ -14,7 +14,7 @@ import java.util.List;
 public class Movie {
     private Integer id;
     private String name;
-    private Integer year;
+    private Integer releaseYear;
     private String description;
     private Long directorId;
     private List<Long> cast;

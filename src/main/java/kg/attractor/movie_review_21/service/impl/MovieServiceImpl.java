@@ -2,6 +2,7 @@ package kg.attractor.movie_review_21.service.impl;
 
 import kg.attractor.movie_review_21.dao.MovieDao;
 import kg.attractor.movie_review_21.dto.MovieDto;
+import kg.attractor.movie_review_21.dto.MovieRequest;
 import kg.attractor.movie_review_21.errors.CanNotFindMovieException;
 import kg.attractor.movie_review_21.model.Movie;
 import kg.attractor.movie_review_21.service.CastService;
@@ -37,7 +38,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void create(MovieDto movieDto) {
+    public void create(MovieRequest movieDto) {
 //        var casts = movieDto.getCast().stream()
 //                .map(e -> Cast.builder()
 //                        .fullName(e.getFullName())
@@ -56,11 +57,19 @@ public class MovieServiceImpl implements MovieService {
 //                .build());
     }
 
+    @Override
+    public List<MovieDto> getMovies() {
+        var movies = movieDao.getMovies();
+        return movies.stream()
+                .map(this::convertToDto)
+                .toList();
+    }
+
     private MovieDto convertToDto(Movie movie) {
         return MovieDto.builder()
                 .id(movie.getId())
                 .name(movie.getName())
-                .year(movie.getYear())
+                .year(movie.getReleaseYear())
                 .description(movie.getDescription())
                 .director(directorService.convertToDto(movie.getDirectorId()))
                 .cast(castService.convertToDto(movie.getId()))

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CastService {
     List<CastDto> convertToDto(long casts);
+
+    List<CastDto> getList();
 }

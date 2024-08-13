@@ -1,4 +1,4 @@
-package kg.attractor.movie_review_21.controller;
+package kg.attractor.movie_review_21.controller.api;
 
 import kg.attractor.movie_review_21.dto.DirectorDto;
 import kg.attractor.movie_review_21.service.DirectorService;

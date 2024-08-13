@@ -1,4 +1,4 @@
-package kg.attractor.movie_review_21.controller;
+package kg.attractor.movie_review_21.controller.api;
 
 import jakarta.validation.Valid;
 import kg.attractor.movie_review_21.dto.UserDto;

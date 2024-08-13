@@ -23,4 +23,16 @@ public class CastServiceImpl implements CastService {
                         .build())
                 .toList();
     }
+
+    @Override
+    public List<CastDto> getList() {
+        var list = castDao.findAll();
+        return list.stream()
+                .map(e -> CastDto.builder()
+                        .id(e.getId())
+                        .fullName(e.getFullName())
+                        .role(e.getRole())
+                        .build())
+                .toList();
+    }
 }

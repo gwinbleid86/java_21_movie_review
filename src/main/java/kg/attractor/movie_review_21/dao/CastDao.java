@@ -22,4 +22,9 @@ public class CastDao {
                 """;
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Cast.class), movieId);
     }
+
+    public List<Cast> findAll() {
+        String sql = "select * from CAST_MEMBER";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Cast.class));
+    }
 }

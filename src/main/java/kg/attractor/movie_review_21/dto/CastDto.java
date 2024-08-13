@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CastDto {
+    private Long id;
     private String fullName;
     private String role;
 }
