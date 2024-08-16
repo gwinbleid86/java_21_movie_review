@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController("restProfile")
-@RequestMapping("movies")
+@RequestMapping("api/movies")
 @RequiredArgsConstructor
 public class MovieController {
 

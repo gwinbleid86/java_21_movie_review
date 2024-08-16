@@ -5,6 +5,8 @@ spring:
     name: Movie_review_21
   mvc:
     static-path-pattern: /static/**
+  freemarker:
+    expose-session-attributes: true
 # ------------- DataBases
   datasource:
     url: jdbc:h2:./db/movie_review;AUTO_SERVER=TRUE

@@ -6,6 +6,7 @@ import kg.attractor.movie_review_21.model.User;
 import kg.attractor.movie_review_21.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
+    private final PasswordEncoder encoder;
 
     @Override
     public List<UserDto> getUserList() {
@@ -55,5 +57,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(UserDto userDto) {
         log.info(userDto.toString());
+        log.info(encoder.encode(userDto.getPassword()));
     }
 }

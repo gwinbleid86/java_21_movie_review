@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h5 class="card-title">${movie.name}</h5>
                     <p class="card-text">${movie.year}</p>
-                    <a href="#" class="btn btn-primary">More Info</a>
+                    <a href="/${movie.id}" class="btn btn-primary">More Info</a>
                 </div>
             </div>
         </#list>
