@@ -1,5 +1,6 @@
 package kg.attractor.movie_review_21.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +12,24 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "movie")
 public class Movie {
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
+
+    @Column(name = "release_year")
     private Integer releaseYear;
+
     private String description;
-    private Long directorId;
-    private List<Long> cast;
+
+    @ManyToOne
+    @JoinColumn(name = "director_id")
+    private Director director;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
+    private List<MovieCastMember> movieCastMemberList;
 }

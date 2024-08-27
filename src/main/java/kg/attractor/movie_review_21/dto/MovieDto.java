@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MovieDto {
-    private Integer id;
+    private Long id;
     private String name;
     private Integer year;
     private String description;

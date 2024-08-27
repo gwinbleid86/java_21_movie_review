@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: Remove authorities constraint from usr
+      author: Aleksei
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: usr
+            constraintName: fk_authority_usr_id
+        - dropColumn:
+            tableName: usr
+            columnName: authority_id

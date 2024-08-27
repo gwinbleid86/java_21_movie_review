@@ -20,11 +20,19 @@
 
     <style>
         .navbar {
-            position: -webkit-sticky;
             position: sticky;
             top: 0;
         }
     </style>
+    <#assign known = SPRING_SECURITY_CONTEXT?? >
+    <#if known>
+        <#assign
+        user = SPRING_SECURITY_CONTEXT.authentication.principal
+        name = user.getUsername()
+        >
+    </#if>
+
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Navbar</a>
@@ -38,9 +46,14 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/create">Create</a>
-                    </li>
+
+                    <#if user?? && user.authorities?seq_contains("ADMIN")>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/create">Create</a>
+                        </li>
+                    </#if>
+
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,12 +78,13 @@
                 <#--                </form>-->
             </div>
 
-            <#assign known = SPRING_SECURITY_CONTEXT?? >
-            <#if known>
-                <#assign
-                user = SPRING_SECURITY_CONTEXT.authentication.principal
-                name = user.getUsername()
-                >
+            <#--            <#assign known = SPRING_SECURITY_CONTEXT?? >-->
+            <#--            <#if known>-->
+            <#--                <#assign-->
+            <#--                user = SPRING_SECURITY_CONTEXT.authentication.principal-->
+            <#--                name = user.getUsername()-->
+            <#--                >-->
+            <#if user??>
                 <a href="/profile/${name}" class="text-light m-2 m-sm-0">
                     Hello, ${name}:
                     <#list user.authorities as auth>
@@ -80,10 +94,15 @@
                         </#if>
                     </#list>
                 </a>
-
-                <a href="/logout" class="btn btn-outline-info m-2"
-                   id="logout">Logout</a>
-
+                <#if _csrf??>
+                    <form action="/logout" method="post">
+                        <input type="hidden" name="${(_csrf.parameterName)!'csrf'}"
+                               value="${(_csrf.token)!'--no-token--'}"/>
+                        <button type="submit" class="btn btn-outline-info m-2" id="logout">Logout</button>
+                    </form>
+                <#else>
+                    <a href="/logout" class="btn btn-outline-info m-2" id="logout">Logout</a>
+                </#if>
             <#else>
                 <a href="/auth/login"
                    class="btn btn-outline-info m-2">Login</a>

@@ -5,11 +5,14 @@ import kg.attractor.movie_review_21.dto.MovieDto;
 import kg.attractor.movie_review_21.dto.MovieRequest;
 import kg.attractor.movie_review_21.errors.CanNotFindMovieException;
 import kg.attractor.movie_review_21.model.Movie;
+import kg.attractor.movie_review_21.repository.MovieRepository;
 import kg.attractor.movie_review_21.service.CastService;
 import kg.attractor.movie_review_21.service.DirectorService;
 import kg.attractor.movie_review_21.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.properties.SwaggerUiOAuthProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,13 +24,15 @@ public class MovieServiceImpl implements MovieService {
     private final DirectorService directorService;
     private final CastService castService;
     private final MovieDao movieDao;
-    private final SwaggerUiOAuthProperties swaggerUiOAuthProperties;
+    private final MovieRepository movieRepository;
 
     @Override
-    public List<MovieDto> getMovies(Integer page, Integer size) {
-        return movieDao.getMovies(size, size * page).stream()
+    public Page<MovieDto> getMovies(Pageable pageable) {
+        Page<Movie> movies = movieRepository.findAll(pageable);
+        var list = movieRepository.findAll(pageable).get()
                 .map(this::convertToDto)
                 .toList();
+        return new PageImpl<>(list, pageable, movies.getTotalElements());
     }
 
     @Override
@@ -59,7 +64,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> getMovies() {
-        var movies = movieDao.getMovies();
+        var movies = movieRepository.findAll();
         return movies.stream()
                 .map(this::convertToDto)
                 .toList();
@@ -71,7 +76,7 @@ public class MovieServiceImpl implements MovieService {
                 .name(movie.getName())
                 .year(movie.getReleaseYear())
                 .description(movie.getDescription())
-                .director(directorService.convertToDto(movie.getDirectorId()))
+//                .director(directorService.convertToDto(movie.getDirectorId()))
                 .cast(castService.convertToDto(movie.getId()))
                 .build();
     }

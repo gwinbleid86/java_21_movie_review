@@ -4,6 +4,8 @@ import kg.attractor.movie_review_21.dto.MovieDto;
 import kg.attractor.movie_review_21.errors.CanNotFindMovieException;
 import kg.attractor.movie_review_21.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController("restProfile")
 @RequestMapping("api/movies")
@@ -22,11 +22,8 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<List<MovieDto>> getMovies(
-            @RequestParam(name = "page") Integer page,
-            @RequestParam(name = "size") Integer size
-    ) {
-        return new ResponseEntity<>(movieService.getMovies(page, size), HttpStatus.OK);
+    public ResponseEntity<Page<MovieDto>> getMovies(Pageable pageable) {
+        return new ResponseEntity<>(movieService.getMovies(pageable), HttpStatus.OK);
     }
 
     @GetMapping("search")

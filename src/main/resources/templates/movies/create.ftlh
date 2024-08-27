@@ -2,6 +2,10 @@
 <@layout.layout>
 
     <form action="/create" method="post">
+        <#if _csrf??>
+            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                   value="${(_csrf.token)!'csrf-token'}"/>
+        </#if>
         <div class="input-group mb-3">
             <span class="input-group-text" id="title">Title</span>
             <input type="text" class="form-control" aria-label="Title" aria-describedby="title" name="name">

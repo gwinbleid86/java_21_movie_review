@@ -9,7 +9,7 @@ public interface DirectorService {
 
     List<DirectorDto> getList();
 
-    DirectorDto getByMovieId(int movieId);
+    DirectorDto getByMovieId(long movieId);
 
     void create(DirectorDto directorDto);
 }

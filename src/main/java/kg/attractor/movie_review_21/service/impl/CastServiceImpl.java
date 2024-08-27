@@ -18,8 +18,8 @@ public class CastServiceImpl implements CastService {
         var castList = castDao.getCastListByMovieId(movieId);
         return castList.stream()
                 .map(e -> CastDto.builder()
-                        .fullName(e.getFullName())
-                        .role(e.getRole())
+                        .fullName(e.getFullname())
+//                        .role(e.getRole())
                         .build())
                 .toList();
     }
@@ -30,8 +30,8 @@ public class CastServiceImpl implements CastService {
         return list.stream()
                 .map(e -> CastDto.builder()
                         .id(e.getId())
-                        .fullName(e.getFullName())
-                        .role(e.getRole())
+                        .fullName(e.getFullname())
+//                        .role(e.getRole())
                         .build())
                 .toList();
     }

@@ -5,6 +5,8 @@ import kg.attractor.movie_review_21.service.CastService;
 import kg.attractor.movie_review_21.service.DirectorService;
 import kg.attractor.movie_review_21.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,11 @@ public class MovieController {
     private final CastService castService;
 
     @GetMapping
-    public String getMovies(Model model) {
-        model.addAttribute("movies", movieService.getMovies());
+    public String getMovies(
+            Model model,
+            @PageableDefault(size = 3, sort = "releaseYear") Pageable pageable
+    ) {
+        model.addAttribute("movies", movieService.getMovies(pageable));
         return "movies/index";
     }
 
