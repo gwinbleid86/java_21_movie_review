@@ -35,6 +35,12 @@
                                 <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
                                 <form action="/auth/register" method="post">
+                                    <!-- CSRF -->
+                                    <#if _csrf??>
+                                        <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                               value="${(_csrf.token)!'csrf-token'}"/>
+                                    </#if>
+
                                     <#--                                    <div data-mdb-input-init class="form-outline mb-4">-->
                                     <#--                                        <label class="form-label" for="form3Example1cg">Your Name</label>-->
                                     <#--                                        <input type="text" id="form3Example1cg" class="form-control form-control-lg"-->

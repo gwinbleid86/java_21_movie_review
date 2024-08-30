@@ -1,5 +1,6 @@
 package kg.attractor.movie_review_21.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -22,6 +23,14 @@ public class User {
 
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+    private String resetPasswordToken;
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users", cascade = CascadeType.ALL)
     private Collection<Role> roles;
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
 }

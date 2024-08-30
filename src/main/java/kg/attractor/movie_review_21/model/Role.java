@@ -1,5 +1,6 @@
 package kg.attractor.movie_review_21.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,10 +25,10 @@ public class Role {
     @Column(name = "role")
     private String roleName;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles", cascade = CascadeType.ALL)
     private Collection<Authority> authorities;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "usr_roles",
             joinColumns = @JoinColumn(name = "role_id"),

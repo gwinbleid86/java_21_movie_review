@@ -33,6 +33,20 @@ spring:
     ansi:
       enabled: always
 
+  # ------------- Mail
+  mail:
+    host: smtp.gmail.com
+    username: res.pswd.attractor@gmail.com
+    password: udbj mooa cwid osgt
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 logging:
   level:
     root: info

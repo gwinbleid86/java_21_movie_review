@@ -28,10 +28,14 @@
                     <div class="card-body py-5 px-md-5">
 
                         <form id="login-form" action="/auth/login" method="post">
+
+                            <!-- CSRF -->
                             <#if _csrf??>
                             <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                    value="${(_csrf.token)!'csrf-token'}"/>
-                            </#if><!-- Email input -->
+                            </#if>
+
+                            <!-- Email input -->
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <input type="email" id="form2Example1" class="form-control" name="username"/>
                                 <label class="form-label" for="form2Example1">Email address</label>
@@ -42,6 +46,14 @@
                                 <input type="password" id="form2Example2" class="form-control" name="password"/>
                                 <label class="form-label" for="form2Example2">Password</label>
                             </div>
+
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <a href="/auth/forgot_password">Forgot password</a>
+                                </div>
+                            </div>
+
+
                             <!-- Submit button -->
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init
                                     class="btn btn-primary btn-block mb-4">Sign in
