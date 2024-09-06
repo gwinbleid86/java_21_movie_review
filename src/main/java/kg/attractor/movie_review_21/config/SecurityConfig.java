@@ -1,5 +1,8 @@
 package kg.attractor.movie_review_21.config;
 
+import kg.attractor.movie_review_21.model.CustomOAuth2User;
+import kg.attractor.movie_review_21.service.impl.AuthUserDetailsService;
+import kg.attractor.movie_review_21.service.impl.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +11,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -18,10 +19,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final AuthUserDetailsService authUserDetailsService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -40,7 +39,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/movies").hasAuthority("ADMIN")
                         .requestMatchers("/create").hasAuthority("ADMIN")
-                        .anyRequest().permitAll());
+                        .anyRequest().permitAll())
+                .oauth2Login(oAuth2 -> oAuth2
+                        .loginPage("/auth/login")
+                        .userInfoEndpoint(userConfig -> userConfig
+                                .userService(customOAuth2UserService))
+                        .successHandler(((request, response, authentication) -> {
+                            var oAuthUser = (CustomOAuth2User) authentication.getPrincipal();
+                            authUserDetailsService.processOAuthPostLogin(oAuthUser.getAttribute("email"));
+                            response.sendRedirect("/");
+                        })));
         return http.build();
     }
 }
