@@ -61,3 +61,42 @@ function updateOptions(options) {
     update.headers = makeHeaders()
     return update
 }
+
+
+/**
+ * [
+ * {
+ *     name: '',
+ *     category: '',
+ *     salary: 123,
+ *     expirience: 123,
+ *     description: ''
+ * },
+ * ]
+ *
+ * <li>
+ *     <h3>${item.name}</h3>
+ *     <p>${item.description}</p>
+ * </li>
+ *
+ * function makeVacancy(data){
+ *     const li = document.createElement('li')
+ *
+ *     const h3 = document.creteElement('h3')
+ *     h3.innerText = data.name
+ *
+ *     const p = document.createElement('p')
+ *     p.innerText = data.description
+ *
+ *     li.append(h3)
+ *     li.append(p)
+ *
+ *     return li
+ * }
+ *
+ *
+ * const vacancyBlock = document.getElementById('vacancyBlock')
+ * for(item of response){
+ *     vacancyBlock.append(makeVacancy(item))
+ * }
+ */
