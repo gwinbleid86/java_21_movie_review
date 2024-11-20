@@ -1,0 +1,32 @@
+#networks:
+#  movie_review:
+
+services:
+
+  app:
+    container_name: movie_review_container
+    image: movie_review_java_21_image:lesson_78
+    restart: always
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./db:/app/db
+      - ./logs:/app/logs
+      - ./config:/app/config
+#    networks:
+#      movie_review:
+#    depends_on:
+#      - db
+
+#  db:
+#    container_name: test_db
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: qwerty
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - ./db_postgres:/var/lib/postgresql/data
+#    networks:
+#      movie_review:
