@@ -33,8 +33,9 @@ build/
 .vscode/
 
 ### Custom ###
-/db/
-/logs/
-/data/
-/config/
-/google/
+/db
+/logs
+/data
+/config
+/google
+.DS_Store
