@@ -67,7 +67,7 @@ jobs:
 
     steps:
       - name: Connect to SSH and pull Docker image
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
