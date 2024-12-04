@@ -60,7 +60,7 @@ jobs:
   #
   deploy:
 
-    needs: publish
+    #    needs: publish
     name: Deploy Docker Image
 
     runs-on: ubuntu-latest
