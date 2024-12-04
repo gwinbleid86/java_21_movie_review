@@ -75,7 +75,6 @@ jobs:
           command_timeout: 30m
           script: |
                     cd ${{secrets.WORK_DIR}}
-            #            docker compose down
                     docker compose pull
                     docker compose up -d
                     exit
