@@ -46,7 +46,8 @@ jobs:
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4.4.3
-        with: Movie_review.jar
+        with:
+          name: Movie_review.jar
 
       - name: Login
         run: |
