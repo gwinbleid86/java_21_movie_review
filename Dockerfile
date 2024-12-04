@@ -1,6 +1,6 @@
 FROM openjdk:21
 RUN mkdir /app
-COPY ./target/Movie_review*.jar ./app/movie_review.jar
+COPY ./Movie_review*.jar ./app/movie_review.jar
 WORKDIR /app
 
 EXPOSE 8089

@@ -7,6 +7,10 @@ on:
   # pull_request:
     # branches: [ "master" ]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.actor }}/movie_review_image:latest
+
 jobs:
   build:
 
@@ -23,3 +27,55 @@ jobs:
         
     - name: Build with Maven
       run: mvn clean package -DskipTests
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v4.4.3
+      with:
+        name: Movie_review.jar
+        path: ./target/Movie_review*.jar
+        retention-days: 1
+
+  publish:
+
+    needs: build
+    name: Publish Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4.4.3
+        with: Movie_review.jar
+
+      - name: Login
+        run: |
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and Publish
+        run: |
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+  deploy:
+
+    needs: publish
+    name: Deploy Docker Image
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Connect to SSH and pull Docker image
+        uses: appleboy/ssh-actions@v1.0.3
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USER}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          port: 22
+          command_timeout: 30m
+          script: |
+                    cd ${{secrets.WORK_DIR}}
+            #            docker compose down
+                    docker compose pull
+                    docker compose up -d
+                    exit
